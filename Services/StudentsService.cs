@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using shoeshoe.Interfaces;
 using shoeshoe.Models;
 using shoeshoe.Repositories;
 
 namespace shoeshoe.Services
 {
-    public class StudentsService
+    public class StudentsService : IService<Student>
     {
         private readonly StudentsRepository _repo;
         public StudentsService(StudentsRepository sr)
@@ -13,25 +14,25 @@ namespace shoeshoe.Services
             _repo = sr;
         }
 
-        internal IEnumerable<Student> Get()
+        public IEnumerable<Student> Get()
         {
             return _repo.Get();
         }
 
-        internal Student GetById(int id)
+        public Student GetById(int id)
         {
             var exists = _repo.GetById(id);
             if (exists == null) { throw new Exception("Invalid Id"); }
             return exists;
         }
 
-        internal Student Create(Student newData)
+        public Student Create(Student newData)
         {
             _repo.Create(newData);
             return newData;
         }
 
-        internal Student Edit(Student update)
+        public Student Edit(Student update)
         {
             var exists = _repo.GetById(update.Id);
             if (exists == null) { throw new Exception("Invalid Id"); }
@@ -42,7 +43,7 @@ namespace shoeshoe.Services
             return update;
         }
 
-        internal string Delete(int id)
+        public string Delete(int id)
         {
             var exists = _repo.GetById(id);
             if (exists == null) { throw new Exception("Invalid Id"); }
@@ -50,7 +51,7 @@ namespace shoeshoe.Services
             return "Successfully Deleted";
         }
 
-        internal object GetByClassroomId(int id)
+        public object GetByClassroomId(int id)
         {
 
             throw new NotImplementedException();

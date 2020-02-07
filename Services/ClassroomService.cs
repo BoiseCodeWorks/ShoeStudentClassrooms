@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using shoeshoe.Interfaces;
 using shoeshoe.Models;
 using shoeshoe.Repositories;
 
 namespace shoeshoe.Services
 {
-    public class ClassroomsService
+    public class ClassroomsService : IService<Classroom>
     {
         private readonly ClassroomsRepository _repo;
         public ClassroomsService(ClassroomsRepository sr)
@@ -13,27 +14,28 @@ namespace shoeshoe.Services
             _repo = sr;
         }
 
-        internal IEnumerable<Classroom> Get()
+        public IEnumerable<Classroom> Get()
         {
             return _repo.Get();
         }
 
-        internal Classroom GetById(int id)
+        public Classroom GetById(int id)
         {
             var exists = _repo.GetById(id);
             if (exists == null) { throw new Exception("Invalid Id"); }
             return exists;
         }
 
-        internal Classroom Create(Classroom newData)
+        public Classroom Create(Classroom newData)
         {
             _repo.Create(newData);
             return newData;
         }
 
-        internal Classroom Edit(Classroom update)
+        public Classroom Edit(Classroom update, int id)
         {
-            var exists = _repo.GetById(update.Id);
+            update.Id = id;
+            var exists = _repo.GetById(id);
             if (exists == null) { throw new Exception("Invalid Id"); }
 
             // update.AuthorId = exists.AuthorId
@@ -42,7 +44,7 @@ namespace shoeshoe.Services
             return update;
         }
 
-        internal string Delete(int id)
+        public string Delete(int id)
         {
             var exists = _repo.GetById(id);
             if (exists == null) { throw new Exception("Invalid Id"); }
@@ -50,7 +52,7 @@ namespace shoeshoe.Services
             return "Successfully Deleted";
         }
 
-        internal IEnumerable<Classroom> GetByStudentId(int studentId)
+        public IEnumerable<Classroom> GetByStudentId(int studentId)
         {
             return _repo.GetClassroomsByStudentId(studentId);
         }
